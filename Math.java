@@ -5,7 +5,11 @@ import java.util.Random;
 public class Math {
 
     public static final Random RANDOM = new Random();
+    public static final float THRESHOLD = 1E-6F;
 
+    /**
+     * Returns a random double in the intervall a=[-1;1].
+     */
     public static float getDouble () {
 
         return ( RANDOM.nextFloat() * ( RANDOM.nextBoolean() ? 1F : -1F ) );
@@ -21,28 +25,6 @@ public class Math {
 
     }
 
-    public static boolean isFloat ( Object object ) {
-
-        try {
-
-            Float.parseFloat( String.valueOf( object ) );
-
-        } catch ( NumberFormatException exception ) {
-
-            return false;
-
-        }
-
-        return true;
-
-    }
-
-    public static float toFloat ( Object object ) {
-
-        return Float.parseFloat( String.valueOf( object ) );
-
-    }
-
     public static float sin ( float angle ) {
 
         return ( float ) java.lang.Math.sin( angle );
@@ -52,6 +34,18 @@ public class Math {
     public static float cos ( float angle ) {
 
         return ( float ) java.lang.Math.cos( angle );
+
+    }
+
+    public static float toRadians ( float angle ) {
+
+        return ( float ) java.lang.Math.toRadians( angle );
+
+    }
+
+    public static float sqrt ( float value ) {
+
+        return ( float ) java.lang.Math.sqrt( value );
 
     }
 

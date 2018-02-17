@@ -9,8 +9,6 @@ public class Face {
     private Vector b;
     private Vector c;
 
-    private float matrix[][];
-
     public Face ( Vector reference , Vector a , Vector b , Vector c ) {
 
         this.reference = reference;
@@ -18,10 +16,6 @@ public class Face {
         this.a = a;
         this.b = b;
         this.c = c;
-
-        this.matrix = new float[ 3 ][ 3 ];
-
-        this.update();
 
     }
 
@@ -32,10 +26,6 @@ public class Face {
         this.a = a;
         this.b = b;
         this.c = c;
-
-        this.matrix = new float[ 3 ][ 3 ];
-
-        this.update();
 
     }
 
@@ -60,12 +50,6 @@ public class Face {
     public Vector getC () {
 
         return this.c;
-
-    }
-
-    public float[][] getMatrix () {
-
-        return this.matrix;
 
     }
 
@@ -102,16 +86,6 @@ public class Face {
 
     }
 
-    /**
-     * Updates every necessary variable.
-     * In this case just the transformation matrix that depends on the current vertices.
-     */
-    public void update () {
-
-        this.matrix = Matrix.get( Matrix.Type.INTERSECTION , this.getNormal().normalize() , this.b.subtract( this.a ) , this.b.subtract( this.c ) , this.a , this.b , this.c );
-
-    }
-
     public boolean intersects ( Beam beam ) {
 
         return beam.intersects( this );
@@ -120,19 +94,13 @@ public class Face {
 
     public boolean intersects ( Face face ) {
 
-        if ( this.intersects( new Beam( face.getA() , face.getB().subtract( face.getA() ) ) ) || this.intersects( new Beam( face.getB() , face.getA().subtract( face.getB() ) ) ) || this.intersects( new Beam( face.getA() , face.getC().subtract( face.getA() ) ) ) || this.intersects( new Beam( face.getC() , face.getA().subtract( face.getC() ) ) ) || this.intersects( new Beam( face.getB() , face.getC().subtract( face.getB() ) ) ) || this.intersects( new Beam( face.getC() , face.getB().subtract( face.getC() ) ) ) ) {
-
-            return true;
-
-        }
-
-        return false;
+        return ( ( new Beam( this.a , this.b.subtract( this.a ) ).intersects( face ) && new Beam( this.b , this.a.subtract( this.b ) ).intersects( face ) ) || ( new Beam( this.a , this.c.subtract( this.a ) ).intersects( face ) && new Beam( this.c , this.a.subtract( this.c ) ).intersects( face ) ) || ( new Beam( this.c , this.b.subtract( this.c ) ).intersects( face ) && new Beam( this.b , this.c.subtract( this.b ) ).intersects( face ) ) );
 
     }
 
     public boolean intersects ( Mesh mesh ) {
 
-        return ( mesh.getFaces().parallelStream().filter( face -> this.intersects( face ) ).findFirst().orElse( null ) != null );
+        return mesh.intersects( this );
 
     }
 

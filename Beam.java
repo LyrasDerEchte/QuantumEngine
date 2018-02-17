@@ -44,25 +44,41 @@ public class Beam {
 
     public boolean intersects ( Face face ) {
 
-        Beam transformed = this.transform( face.getMatrix() );
+        Vector alpha = face.getB().subtract( face.getA() );
+        Vector beta = face.getC().subtract( face.getA() );
+        Vector gamma = this.direction.getCrossProduct( beta );
 
-        float t = - ( transformed.getOrigin().getZ() / transformed.getDirection().getZ() );
-        float alpha = ( transformed.getOrigin().getX() + ( t * transformed.getDirection().getX() ) );
-        float beta = ( transformed.getOrigin().getY() + ( t * transformed.getDirection().getY() ) );
+        float a = ( 1F / alpha.getDotProduct( gamma ) );
 
-        return ( ( alpha >= 0 ) && ( alpha <= 1 ) ) && ( ( beta >= 0 ) && ( beta <= 1 ) ) && ( ( alpha + beta ) <= 1 );
+        Vector delta = this.origin.subtract( face.getA() );
+
+        float b = ( a * delta.getDotProduct( gamma ) );
+
+        if ( b >= 0F && b <= 1F ) {
+
+            Vector epsilon = delta.getCrossProduct( alpha );
+
+            float c = ( a * this.direction.getDotProduct( epsilon ) );
+
+            if ( c >= 0F ) {
+
+                if ( ( b + c ) <= 1F ) {
+
+                    return true;
+
+                }
+
+            }
+
+        }
+
+        return false;
 
     }
 
     public boolean intersects ( Mesh mesh ) {
 
         return mesh.intersects( this );
-
-    }
-
-    public Beam transform ( float[][] matrix ) {
-
-        return new Beam( this.origin.transform( matrix ) , this.direction.transform( matrix ) );
 
     }
 

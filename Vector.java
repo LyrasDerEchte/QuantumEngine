@@ -1,20 +1,16 @@
 package project.engine.quantum;
 
-import java.lang.Math;
-
 public class Vector {
 
     private float x;
     private float y;
     private float z;
-    private float w;
 
     public Vector ( float x , float y , float z ) {
 
         this.x = x;
         this.y = y;
         this.z = z;
-        this.w = 1F;
 
     }
 
@@ -36,12 +32,6 @@ public class Vector {
 
     }
 
-    public float getW () {
-
-        return this.w;
-
-    }
-
     public void setX ( float x ) {
 
         this.x = x;
@@ -57,12 +47,6 @@ public class Vector {
     public void setZ ( float z ) {
 
         this.z = z;
-
-    }
-
-    public void setW ( float w ) {
-
-        this.w = w;
 
     }
 
@@ -99,15 +83,15 @@ public class Vector {
      */
     public void adapt ( Vector vector ) {
 
-        this.x = vector.getX();
-        this.y = vector.getY();
-        this.z = vector.getZ();
+        this.x = ( ( vector.getX() > Math.THRESHOLD || vector.getX() < - Math.THRESHOLD ) ? vector.getX() : 0F );
+        this.y = ( ( vector.getY() > Math.THRESHOLD || vector.getY() < - Math.THRESHOLD ) ? vector.getY() : 0F );
+        this.z = ( ( vector.getZ() > Math.THRESHOLD || vector.getZ() < - Math.THRESHOLD ) ? vector.getZ() : 0F );
 
     }
 
     public float getMagnitude () {
 
-        return ( float ) Math.sqrt( ( this.x * this.x ) + ( this.y * this.y ) + ( this.z * this.z ) );
+        return Math.sqrt( ( this.x * this.x ) + ( this.y * this.y ) + ( this.z * this.z ) );
 
     }
 
@@ -125,9 +109,9 @@ public class Vector {
 
     public Vector transform ( float[][] matrix ) {
 
-        if ( matrix.length == 3 && matrix[ 0 ].length == 4 ) {
+        if ( matrix.length == 3 && matrix[ 0 ].length == 3 ) {
 
-            return new Vector( ( ( matrix[ 0 ][ 0 ] * this.x ) + ( matrix[ 0 ][ 1 ] * this.y ) + ( matrix[ 0 ][ 2 ] * this.z ) + ( matrix[ 0 ][ 3 ] * this.w ) ) , ( ( matrix[ 1 ][ 0 ] * this.x ) + ( matrix[ 1 ][ 1 ] * this.y ) + ( matrix[ 1 ][ 2 ] * this.z ) + ( matrix[ 1 ][ 3 ] * this.w ) ) , ( ( matrix[ 2 ][ 0 ] * this.x ) + ( matrix[ 2 ][ 1 ] * this.y ) + ( matrix[ 2 ][ 2 ] * this.z ) + ( matrix[ 2 ][ 3 ] * this.w ) ) );
+            return new Vector( ( ( matrix[ 0 ][ 0 ] * this.x ) + ( matrix[ 0 ][ 1 ] * this.y ) + ( matrix[ 0 ][ 2 ] * this.z ) ) , ( ( matrix[ 1 ][ 0 ] * this.x ) + ( matrix[ 1 ][ 1 ] * this.y ) + ( matrix[ 1 ][ 2 ] * this.z ) ) , ( ( matrix[ 2 ][ 0 ] * this.x ) + ( matrix[ 2 ][ 1 ] * this.y ) + ( matrix[ 2 ][ 2 ] * this.z )) );
 
         }
 
@@ -157,7 +141,7 @@ public class Vector {
     @Override
     public String toString () {
 
-        return new String( "[" + this.x + "," + this.y + "," + this.z + "," + this.getMagnitude() + "]" );
+        return new String( "[" + this.x + "," + this.y + "," + this.z + "]" );
 
     }
 

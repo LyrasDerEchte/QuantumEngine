@@ -65,17 +65,15 @@ public class Mesh {
 
         }
 
-        float[][] matrix = Matrix.get( Matrix.Type.ROTATION , axis , angle );
+        float[][] matrix = Matrix.get( axis , angle );
 
-        this.faces.parallelStream().forEach( face -> {
+        for ( Face face : this.faces ) {
 
-            face.getA().transform( matrix );
-            face.getB().transform( matrix );
-            face.getC().transform( matrix );
+            face.getA().adapt( face.getA().transform( matrix ) );
+            face.getB().adapt( face.getB().transform( matrix ) );
+            face.getC().adapt( face.getC().transform( matrix ) );
 
-            face.update();
-
-        } );
+        }
 
     }
 
@@ -91,28 +89,25 @@ public class Mesh {
         float alpha = ( pitch * Math.cos( this.yaw ) );
         float beta = ( pitch * Math.sin( this.yaw ) );
 
-        float[][] y = Matrix.get( Matrix.Type.ROTATION , Axis.Y , yaw );
-        float[][] x = Matrix.get( Matrix.Type.ROTATION , Axis.X , alpha );
-        float[][] z = Matrix.get( Matrix.Type.ROTATION , Axis.Z , beta );
+        float[][] x = Matrix.get( Axis.X , alpha );
+        float[][] y = Matrix.get( Axis.Y , yaw );
+        float[][] z = Matrix.get( Axis.Z , beta );
 
-        this.faces.parallelStream().forEach( face -> {
+        for ( Face face : this.faces ) {
 
-            face.getA().transform( y );
-            face.getB().transform( y );
-            face.getC().transform( y );
+            face.getA().adapt( face.getA().transform( y ) );
+            face.getB().adapt( face.getB().transform( y ) );
+            face.getC().adapt( face.getC().transform( y ) );
 
-            face.getA().transform( x );
-            face.getB().transform( x );
-            face.getC().transform( x );
+            face.getA().adapt( face.getA().transform( x ) );
+            face.getB().adapt( face.getB().transform( x ) );
+            face.getC().adapt( face.getC().transform( x ) );
 
-            face.getA().transform( z );
-            face.getB().transform( z );
-            face.getC().transform( z );
+            face.getA().adapt( face.getA().transform( z ) );
+            face.getB().adapt( face.getB().transform( z ) );
+            face.getC().adapt( face.getC().transform( z ) );
 
-            face.update();
-
-        } );
-
+        }
     }
 
     public void expand ( float alpha ) {
@@ -122,8 +117,6 @@ public class Mesh {
             face.getA().adapt( face.getA().multiply( alpha ) );
             face.getB().adapt( face.getB().multiply( alpha ) );
             face.getC().adapt( face.getC().multiply( alpha ) );
-
-            face.update();
 
         } );
 
@@ -145,7 +138,7 @@ public class Mesh {
 
     public boolean intersects ( Beam beam ) {
 
-        return ( ( this.faces.parallelStream().filter( face -> beam.intersects( face ) ).count() % 2 ) != 0 );
+        return ( this.faces.parallelStream().filter( face -> beam.intersects( face ) ).count() > 0 );
 
     }
 
