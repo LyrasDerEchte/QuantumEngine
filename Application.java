@@ -47,7 +47,7 @@ public class Application {
 
         while ( true ) {
 
-//            mesh.rotate( Axis.Y , 0.5F );
+            mesh.rotate( Axis.Y , 0.5F );
 
             FPS++;
 
