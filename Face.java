@@ -1,61 +1,36 @@
 package project.engine.quantum;
 
-public class Face {
+public class Face extends Primitive {
 
-    // Reference point for converting theoretical to absolute positions.
-    private Vector reference;
+    private Vector transformer;
 
-    private Vector a;
-    private Vector b;
-    private Vector c;
+    private int color = 0xFFFFFFFF;
 
-    public Face ( Vector reference , Vector a , Vector b , Vector c ) {
+    public Face ( Vector a , Vector b , Vector c , Vector transformer , int color  ) {
 
-        this.reference = reference;
+        super( a , b , c );
 
-        this.a = a;
-        this.b = b;
-        this.c = c;
+        this.transformer = transformer;
+
+        this.color = color;
 
     }
 
-    public Face ( Vector a , Vector b , Vector c ) {
+    public Vector getTransformer () {
 
-        this.reference = new Vector( 0 , 0 , 0 );
-
-        this.a = a;
-        this.b = b;
-        this.c = c;
+        return this.transformer;
 
     }
 
-    public Vector getReference () {
+    public int getColor () {
 
-        return this.reference;
-
-    }
-
-    public Vector getA () {
-
-        return this.a;
+        return this.color;
 
     }
 
-    public Vector getB () {
+    public void setTransformer ( Vector transformer ) {
 
-        return this.b;
-
-    }
-
-    public Vector getC () {
-
-        return this.c;
-
-    }
-
-    public void setReference ( Vector reference ) {
-
-        this.reference = reference;
+        this.transformer = transformer;
 
     }
 
@@ -77,12 +52,18 @@ public class Face {
 
     }
 
+    public void setColor ( int color ) {
+
+        this.color = color;
+
+    }
+
     /**
      * Returning the face's normal.
      */
     public Vector getNormal () {
 
-        return this.reference.add( this.b ).subtract( this.reference.add( this.a ) ).getCrossProduct( this.reference.add( this.c ).subtract( this.reference.add( this.a ) ) );
+        return this.transformer.add( this.b ).subtract( this.transformer.add( this.a ) ).getCrossProduct( this.transformer.add( this.c ).subtract( this.transformer.add( this.a ) ) );
 
     }
 
@@ -107,7 +88,7 @@ public class Face {
     @Override
     public String toString () {
 
-        return new String( "[" + this.a.toString() + "," + this.b.toString() + "," + this.c.toString() + "]" );
+        return new String( "{a:" + this.a.toString() + ",b:" + this.b.toString() + ",c:" + this.c.toString() + ",transformer:" + this.transformer.toString() + ",color:" + this.color + "}" );
 
     }
 

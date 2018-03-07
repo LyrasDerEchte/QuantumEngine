@@ -83,9 +83,9 @@ public class Vector {
      */
     public void adapt ( Vector vector ) {
 
-        this.x = ( ( vector.getX() > Math.THRESHOLD || vector.getX() < - Math.THRESHOLD ) ? vector.getX() : 0F );
-        this.y = ( ( vector.getY() > Math.THRESHOLD || vector.getY() < - Math.THRESHOLD ) ? vector.getY() : 0F );
-        this.z = ( ( vector.getZ() > Math.THRESHOLD || vector.getZ() < - Math.THRESHOLD ) ? vector.getZ() : 0F );
+        this.x = Math.restrain( vector.getX() );
+        this.y = Math.restrain( vector.getY() );
+        this.z = Math.restrain( vector.getZ() );
 
     }
 
@@ -107,11 +107,17 @@ public class Vector {
 
     }
 
+    public Vector transform ( float[][] x , float[][] y , float[][] z ) {
+
+        return this.transform( y ).transform( x ).transform( z );
+
+    }
+
     public Vector transform ( float[][] matrix ) {
 
         if ( matrix.length == 3 && matrix[ 0 ].length == 3 ) {
 
-            return new Vector( ( ( matrix[ 0 ][ 0 ] * this.x ) + ( matrix[ 0 ][ 1 ] * this.y ) + ( matrix[ 0 ][ 2 ] * this.z ) ) , ( ( matrix[ 1 ][ 0 ] * this.x ) + ( matrix[ 1 ][ 1 ] * this.y ) + ( matrix[ 1 ][ 2 ] * this.z ) ) , ( ( matrix[ 2 ][ 0 ] * this.x ) + ( matrix[ 2 ][ 1 ] * this.y ) + ( matrix[ 2 ][ 2 ] * this.z )) );
+            return new Vector( Math.restrain( ( matrix[ 0 ][ 0 ] * this.x ) + ( matrix[ 0 ][ 1 ] * this.y ) + ( matrix[ 0 ][ 2 ] * this.z ) ) , Math.restrain( ( matrix[ 1 ][ 0 ] * this.x ) + ( matrix[ 1 ][ 1 ] * this.y ) + ( matrix[ 1 ][ 2 ] * this.z ) ) , Math.restrain( ( matrix[ 2 ][ 0 ] * this.x ) + ( matrix[ 2 ][ 1 ] * this.y ) + ( matrix[ 2 ][ 2 ] * this.z ) ) );
 
         }
 
@@ -141,7 +147,7 @@ public class Vector {
     @Override
     public String toString () {
 
-        return new String( "[" + this.x + "," + this.y + "," + this.z + "]" );
+        return new String( "{x:" + this.x + ",y:" + this.y + ",z:" + this.z + "}" );
 
     }
 

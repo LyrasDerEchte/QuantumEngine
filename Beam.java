@@ -82,4 +82,11 @@ public class Beam {
 
     }
 
+    @Override
+    public String toString () {
+
+        return new String( "{origin:" + this.origin.toString() + ",direction:" + this.direction.toString() + "}" );
+
+    }
+
 }

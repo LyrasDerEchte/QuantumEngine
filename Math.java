@@ -5,10 +5,10 @@ import java.util.Random;
 public class Math {
 
     public static final Random RANDOM = new Random();
-    public static final float THRESHOLD = 1E-6F;
+    public static final float THRESHOLD = 0.0001F;
 
     /**
-     * Returns a random double in the intervall a=[-1;1].
+     * Returns a random double in the interval a=[-1;1].
      */
     public static float getDouble () {
 
@@ -46,6 +46,24 @@ public class Math {
     public static float sqrt ( float value ) {
 
         return ( float ) java.lang.Math.sqrt( value );
+
+    }
+
+    public static float restrain ( float value ) {
+
+        return Math.restrain( value , Math.THRESHOLD );
+
+    }
+
+    public static float restrain ( float value , float threshold ) {
+
+        if ( ( value > 0 && value < threshold ) || ( value < 0 && value > threshold ) ) {
+
+            return 0F;
+
+        }
+
+        return value;
 
     }
 

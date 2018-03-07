@@ -44,9 +44,15 @@ public class Mesh {
 
     }
 
-    public void teleport ( Vector origin ) {
+    public void teleport ( Vector position ) {
 
-        this.origin.adapt( origin );
+        this.origin.adapt( position );
+
+    }
+
+    public void move ( Vector direction ) {
+
+        this.origin.adapt( this.origin.add( direction ) );
 
     }
 
@@ -86,28 +92,16 @@ public class Mesh {
         this.pitch += pitch;
         this.yaw += yaw;
 
-        float alpha = ( pitch * Math.cos( this.yaw ) );
-        float beta = ( pitch * Math.sin( this.yaw ) );
-
-        float[][] x = Matrix.get( Axis.X , alpha );
+        float[][] x = Matrix.get( Axis.X , ( pitch * Math.cos( this.yaw ) ) );
         float[][] y = Matrix.get( Axis.Y , yaw );
-        float[][] z = Matrix.get( Axis.Z , beta );
+        float[][] z = Matrix.get( Axis.Z , ( pitch * Math.sin( this.yaw ) ) );
 
         for ( Face face : this.faces ) {
 
-            face.getA().adapt( face.getA().transform( y ) );
-            face.getB().adapt( face.getB().transform( y ) );
-            face.getC().adapt( face.getC().transform( y ) );
-
-            face.getA().adapt( face.getA().transform( x ) );
-            face.getB().adapt( face.getB().transform( x ) );
-            face.getC().adapt( face.getC().transform( x ) );
-
-            face.getA().adapt( face.getA().transform( z ) );
-            face.getB().adapt( face.getB().transform( z ) );
-            face.getC().adapt( face.getC().transform( z ) );
+            face.transform( x , y , z );
 
         }
+
     }
 
     public void expand ( float alpha ) {
@@ -151,6 +145,13 @@ public class Mesh {
     public boolean intersects ( Mesh mesh ) {
 
         return ( this.faces.parallelStream().filter( face -> ( mesh.faces.parallelStream().filter( element -> element.intersects( face ) ).count() >= 1 ) ).count() >= 1 );
+
+    }
+
+    @Override
+    public String toString () {
+
+        return new String( "{origin:" + this.origin.toString() + ",faces:" + this.faces.toString() + ",pitch:" + this.pitch + ",yaw:" + this.yaw + "}" );
 
     }
 
