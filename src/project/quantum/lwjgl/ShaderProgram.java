@@ -2,6 +2,9 @@ package project.quantum.lwjgl;
 
 import org.lwjgl.opengl.GL20;
 
+/**
+ * "ShaderProgram" is a wrapper for loading and attaching shaders.
+ */
 public class ShaderProgram extends LWJGLObject {
 
     public ShaderProgram ( Shader ... shaders ) {
