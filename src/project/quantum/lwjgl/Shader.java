@@ -5,6 +5,9 @@ import project.quantum.cradle.Utilities;
 
 import java.io.File;
 
+/**
+ * "Shader" is a wrapper for a shader source.
+ */
 public class Shader extends LWJGLObject {
 
     private String source;
