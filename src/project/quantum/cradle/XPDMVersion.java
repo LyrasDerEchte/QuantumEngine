@@ -5,17 +5,17 @@ public enum XPDMVersion {
     UNDEFINED ( "611d94c8-6b1a-4c71-a3c5-5ff81c839fb2" ) ,
     ALPHA ( "alpha" );
 
-    private XPDMVersion ( String representation ) {
+    private XPDMVersion ( String depiction ) {
 
-        this.representation = representation;
+        this.depiction = depiction;
 
     }
 
-    private String representation;
+    private String depiction;
 
-    public String getRepresentation () {
+    public String getDepiction () {
 
-        return this.representation;
+        return this.depiction;
 
     }
 
@@ -23,7 +23,7 @@ public enum XPDMVersion {
 
         for ( XPDMVersion element : XPDMVersion.values() ) {
 
-            if ( element.getRepresentation().equals( version.replaceAll( ( XPDMCommand.VERSION.getRepresentation() + " " ) , "" ) ) ) {
+            if ( element.getDepiction().equals( version.replaceAll( ( XPDMCommand.VERSION.getDepiction() + " " ) , "" ) ) ) {
 
                 return element;
 
